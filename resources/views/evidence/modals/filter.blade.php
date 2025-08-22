@@ -18,7 +18,7 @@
                         <option value="365" {{ $lastDays==365 ? "selected":""}}>Ultimos 365 dias</option>
                         <option value="99999" {{ $lastDays==99999 ? "selected":""}}>Todos</option>
                     </select>
-                    <label for="reference">Período:</label>
+                    <label>Período:</label>
                 </div>
                 <div class="input-field col s12 l6">
                     <i class="material-icons prefix">description</i>
@@ -27,7 +27,7 @@
                         <option value="ENTRADA_" {{ $operation=="ENTRADA_" ? "selected":""}}>ENTRADA</option>
                         <option value="SAIDA_" {{ $operation=="SAIDA_" ? "selected":""}}>SAIDA</option>
                     </select>
-                    <label for="reference">OPERAÇÃO</label>
+                    <label>OPERAÇÃO</label>
                 </div>
                 <div class="input-field col s12">
                     <i class="material-icons prefix">description</i>

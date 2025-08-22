@@ -66,11 +66,6 @@
             @endauth
         </ul>
         @endisset
-        <a href="#filter" id='btn-filter'
-            class="large hoverable btn-floating right orange darken-4 tooltipped modal-trigger" data-tooltip='FILTRAR AGRUPADOR'
-            data-position="bottom">
-            <i class=" material-icons">filter_list</i>
-        </a>
         <a href="#create" id='btn-add-selected'
             class="hoverable btn-floating right teal darken-4 tooltipped modal-trigger" data-tooltip='NOVO AGRUPADOR'
             data-position="bottom">
@@ -78,19 +73,10 @@
         </a>
         @isset($evidences)
         <form action="{{ route('evidence.index') }}" method="GET">
-            <select class="select2 browser-default" name="search_evidence" onchange="this.form.submit()">
-                <option value="" selected disabled>LOCALIZAR AGRUPADOR</option>
-                @foreach ($evidences as $evd)
-                <option value="{{ $evd->id }}"
-                    @isset($searchEvidence){{ $searchEvidence == $evd->id ? 'selected' : '' }}@endisset>
-                    {{ $evd->reference }}
-                </option>
-                @endforeach
-            </select>
             <input type="hidden" name="last_days" value="{{ $lastDays }}">
             <input type="hidden" name="operation" value="{{ $operation }}">
             <input type="hidden" name="reference" value="{{ $reference }}">
-            <b>Filtros:</b>
+            <a href="#filter" id='btn-filter' class="modal-trigger"><b><u>FILTROS:</u></b>
             <div class="chip">
                 {{ $lastDays==99999?'Todos':($lastDays==1?'HOJE':'ÚLTIMOS ' . $lastDays . ' DIAS') }}
             </div>
@@ -108,6 +94,18 @@
                     </div>
                 @endif
             @endisset
+            </a>
+            @if ($evidences->count() > 0)
+                <select class="select2 browser-default" name="search_evidence" onchange="this.form.submit()">
+                    <option value="" selected disabled>LOCALIZAR AGRUPADOR</option>
+                    @foreach ($evidences as $evd)
+                    <option value="{{ $evd->id }}"
+                        @isset($searchEvidence){{ $searchEvidence == $evd->id ? 'selected' : '' }}@endisset>
+                        {{ $evd->reference }}
+                    </option>
+                    @endforeach
+                </select>
+            @endif
         </form>
         @endisset
         @endsection
@@ -146,7 +144,7 @@
     @isset($filesEvidence)
     @section('listing')
     @isset($filesEvidence[0])
-    <div style="width: 98%;margin-inline: auto;word-wrap:break-word ;">PARA:<b>{{ str_replace(date('dmY',strtotime($evidence->created_at)),date('d/m/Y',strtotime($evidence->created_at)),$evidence->reference) }}</b></div>
+    <div style="width: 98%;margin-inline: auto;word-wrap:break-word ;">PARA:<b>{{ str_replace("_"," ",str_replace(date('dmY',strtotime($evidence->created_at)),date('d/m/Y',strtotime($evidence->created_at)),$evidence->reference)) }}</b></div>
     <hr />
 	Encontrei <b>{{ count($filesEvidence) }}</b> arquivo(s)
     @endisset
@@ -217,15 +215,14 @@
 @endisset
 @push('scripts')
 <script>
-    //window.addEventListener("focus",() => location.reload());
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
     $(".select2").select2({
-        dropdownAutoWidth: true,
-        placeholder: "PROCURAR...",
+        dropdownAutoWidth: false,
+        placeholder: "SELECIONE...",
         allowClear: true,
         width: '100%',
         language: {
@@ -283,7 +280,7 @@
         };
         options.timeZone = 'America/Sao_paulo';
 
-        spanVersion.innerText = new Date("07/16/2025 21:00").toLocaleDateString('pt-BR', options)
+        spanVersion.innerText = new Date("08/18/2025 22:00").toLocaleDateString('pt-BR', options)
     });
 </script>
 @endpush
